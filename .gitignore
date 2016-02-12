@@ -1,0 +1,8 @@
+*.asv
+*.m~
+*.mex*
+token.mat
+slprj/
+octave-workspace
+.*
+!.gitignore
