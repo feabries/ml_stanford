@@ -1,6 +1,7 @@
 *.asv
 *.m~
 *.mex*
+*.pdf
 token.mat
 slprj/
 octave-workspace
