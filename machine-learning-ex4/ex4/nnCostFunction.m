@@ -61,27 +61,33 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 % -------------------------------------------------------------
+Delta1 = zeros(m, input_layer_size);
+Delta2 = zeros(m, hidden_layer_size);
+Delta3 = zeros(m, num_labels);
 
+A1 = [ones(m, 1) X];
+A2 = [ones(m, 1) sigmoid(A1 * Theta1')];
+A3 = sigmoid(A2 * Theta2');
+for i = 1:m
+    for j = 1:num_labels
+        J += ifelse(j == y(i), -log(A3(i ,j)), -log(1 - A3(i, j)));
+        Delta3(i , j) = ifelse(j == y(i), A3(i, j) - 1, A3(i, j));
+    endfor
+endfor
+J /= m;
+J += lambda / 2 / m * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
+
+Delta2 = (Delta3 * Theta2(:, 2:end)) .* (A2(:, 2:end) .* (1 - A2(:, 2:end)));
+Delta1 = (Delta2 * Theta1(:, 2:end)) .* (A1(:, 2:end) .* (1 - A1(:, 2:end)));
+for i = 1:m
+    Theta1_grad += Delta2(i, :)' * A1(i, :);
+    Theta2_grad += Delta3(i, :)' * A2(i, :);
+endfor
+Theta1_grad /= m;
+Theta2_grad /= m;
+Theta1_grad(:, 2:end) += lambda / m * Theta1(:, 2:end);
+Theta2_grad(:, 2:end) += lambda / m * Theta2(:, 2:end);
 % =========================================================================
 
 % Unroll gradients
