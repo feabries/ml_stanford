@@ -20,13 +20,13 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
-
-
-
-
-
-
+minDist = realmax(size(X, 1), 1); 
+for i = 1:K
+    _centroids = repmat(centroids(i, :), size(X, 1), 1);
+    dist = sumsq((X - _centroids), 2);
+    idx = ifelse(dist < minDist, i, idx);
+    minDist = ifelse(dist < minDist, dist, minDist);
+endfor
 % =============================================================
 
 end

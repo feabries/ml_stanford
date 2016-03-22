@@ -25,14 +25,13 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
-
-
-
-
-
-
-
-
+counts = zeros(K, 1);
+for i = 1:m
+    ci = idx(i);
+    centroids(ci, :) += X(i, :);
+    counts(ci)++;
+endfor
+centroids ./= repmat(counts, 1, n);
 % =============================================================
 
 
